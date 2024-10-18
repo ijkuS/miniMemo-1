@@ -1,4 +1,4 @@
-import { ImageComponent } from './components/pages/item/image';
+import { ImageComponent } from './components/pages/item/image.js';
 import { PageComponent } from './components/pages/page.js';
 
 class App {
