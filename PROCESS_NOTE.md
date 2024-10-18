@@ -4,7 +4,6 @@ A memo application project with HTML, CSS, and TypeScript.
 This Process Note aims to document the development process of the MiniMemo app.
 
 
-----
 ## Table of contents
 
 - [Overview](#overview)
@@ -99,9 +98,19 @@ Users should be able to:
 
 
 
----------
-
 ### Challenges and Lessons
 
 #### Component planning for OOP
-- Before starting the project, I tried to plan the basic tree of the components for its relations. 
+Before starting the project, I tried to plan the basic tree of the components for its relations.
+
+**Step 1**
+- `app.ts` : app main display
+   - `class App`
+- `page.ts` : ul
+   `class PageComponent`
+- `image.ts` : image list item section 
+   - `class ImageComponent`
+
+> Since PageComponent and ImageComponent are quite similar, I can make class BaseComponent that 2 components can extend(inherit)
+
+- `component.ts` : BaseComponent  
