@@ -1,19 +1,20 @@
-# MiniMemo App
+# Process Note of MiniMemo App 
 
-A memo application project with HTML, CSS, and TypeScript.
+MiniMemo is a memo application project with HTML, CSS, and TypeScript.
 This Process Note aims to document the development process of the MiniMemo app.
 
 ## Table of contents
 
 -    [Overview](#overview)
      -    [Goal](#goal)
+     -    [Links](#links)
 -    [My process](#my-process)
      -    [Planning](#planning)
           -    [Basic interaction planning](#basic-interaction-planning)
           -    [Technical planning](#technical-planning)
-     -    [Challenges and Lessons](#challenges-and-lessons)
-     -    [Continued development](#continued-development)
-     -    [Useful resources](#useful-resources)
+-    [Challenges and Lessons](#challenges-and-lessons)
+-    [Future Improvements](#future-improvements)
+-    [Useful resources](#useful-resources)
 -    [Author](#author)
 -    [Acknowledgments](#acknowledgments)
 
@@ -43,6 +44,11 @@ Users should be able to:
 
 -    Search for a keyword
 -    Toggle the color scheme between light and dark mode
+
+### Links
+
+-    gitHub URL: 
+-    Live Site URL: [Add live site URL here](https://your-live-site-url.com)
 
 ## My process
 
@@ -175,3 +181,14 @@ const regExp = /(?:youtu\.be\/|youtube\.com\/.*[?&]v=)([a-zA-Z0-9_-]{11})/;
 const regExp =
 	/^(?:https?:\/\/)?(?:www\.)?(?:(?:youtube.com\/(?:(?:watch\?v=)|(?:embed\/))([a-zA-Z0-9-]{11}))|(?:youtu.be\/([a-zA-Z0-9-]{11})))/;
 ```
+
+## Future Improvements
+
+## Useful resources
+
+## Author
+
+-    [Noej Ijkus](https://github.com/ijkuS)
+-    [email](ijkus.noej@gmail.com)
+
+## Acknowledgments
