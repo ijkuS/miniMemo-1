@@ -6,13 +6,27 @@ This Process Note aims to document the development process of the MiniMemo app.
 ## Table of contents
 
 -    [Overview](#overview)
+
      -    [Goal](#goal)
      -    [Links](#links)
+
 -    [My process](#my-process)
+
      -    [Planning](#planning)
           -    [Basic interaction planning](#basic-interaction-planning)
           -    [Technical planning](#technical-planning)
+
 -    [Challenges and Lessons](#challenges-and-lessons)
+
+     -    [1. TypeScript environment Preparation](#1-typescript-environment-preparation)
+     -    [2. Component planning for OOP](#2-component-planning-for-oop)
+     -    [3. File organization](#3-file-organization)
+     -    [4. Use RegExp to extract videoId from URL](#4-use-regexp-to-extract-videoid-from-url)
+     -    [5. Purpose of creating PageItemComponent](#5-purpose-of-creating-pageitemcomponent)
+     -    [6. Role of interface 'Composable' and 'Component'](#6-role-of-interface-composable-and-component)
+     -    [7. Role of closeListener](#7-role-of-closelistener)
+     -    [8. Refactoring: Dependency Injection](#8-refactoring-dependency-injection)
+
 -    [Future Improvements](#future-improvements)
 -    [Useful resources](#useful-resources)
 -    [Author](#author)
@@ -56,49 +70,39 @@ Users should be able to:
 
 #### App UX/UI Planning - SPA
 
--    header / navbar
-     -    Logo
-     -    Buttons
-          -    Image button (to add new Image memo)
-          -    Video button (to add new Video memo)
-          -    Note button (to add new Note memo)
-          -    Todo button (to add new Todo memo)
-     -    (Optional) Toggle button for dark mode and light mode
-     -    (Optional) Search input
-     -    (Optional) Login/Logout
--    main
-     -    list of memos
--    footer
-     -    license information
+```html
+- header / navbar - Logo - Buttons - Image button (to add new Image memo) -
+Video button (to add new Video memo) - Note button (to add new Note memo) - Todo
+button (to add new Todo memo) - (Optional) Toggle button for dark mode and light
+mode - (Optional) Search input - (Optional) Login/Logout - main - list of memos
+- footer - license information
+```
 
 #### Basic interaction planning
 
--    Click Image & Video button (media-section)
+> -    Click Image & Video button (media-section)
+>      → popup input window (dialog)
+>      → input: title / url
+>      → add button click
+>      → update the main list on the board
 
-     -    → popup input window (dialog)
-     -    → input: title / url
-     -    → add button click
-     -    → update the main list on the board
+> -    Click Note & Todo button (text-section)
+>      → popup input window (dialog)
+>      → input: title / description(body)
+>      → add button click
+>      → update the main list on the board
 
--    Click Note & Todo button (text-section)
-
-     -    → popup input window (dialog)
-     -    → input: title / description(body)
-     -    → add button click
-     -    → update the main list on the board
-
--    The composition of the list of memos
-
-     -    a memo box of media-section
-
-          -    'delete' button
-          -    Title
-          -    Thumbnail of image or iframe of video
-
-     -    a memo box of text-section
-          -    'delete' button
-          -    Title
-          -    Body (description)
+> -    The composition of the list of memos
+>
+>           - a memo box of media-section
+>                -    'delete' button
+>                -    Title
+>                -    Thumbnail of image or iframe of video
+>
+>           -  a memo box of text-section
+>                -    'delete' button
+>                -    Title
+>                -    Body (description)
 
 #### Technical planning
 
@@ -268,7 +272,6 @@ In short, interfaces make your code more flexible, allowing you to easily update
      Now, PageComponent can work with any class that follows the SectionContainer interface, making it a more flexible and adaptable component.
 
 ### 9. Dialog
-
 
 ### Difference between 'onclick' and 'addEventListener'
 
