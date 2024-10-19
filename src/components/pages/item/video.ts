@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../component';
+import { BaseComponent } from '../../component.js';
 
 export class VideoComponent extends BaseComponent<HTMLElement> {
 	constructor(title: string, body: string, url: string) {
@@ -11,10 +11,11 @@ export class VideoComponent extends BaseComponent<HTMLElement> {
              </section>`);
 
 		const iframe = this.element.querySelector(
-			'video__iframe'
+			'.video__iframe'
 		)! as HTMLIFrameElement;
 
 		iframe.src = this.convertToEmbeddedURL(url);
+		console.log(iframe.src)
 
 		const titleElement = this.element.querySelector(
 			'.video__title'
@@ -28,7 +29,7 @@ export class VideoComponent extends BaseComponent<HTMLElement> {
 	}
 	private convertToEmbeddedURL(url: string): string {
 		const regExp =
-			/(?:youtu\.be\/|youtube\.com\/.*[?&]v=)([a-zA-Z0-9_-]{11})/;
+		/^(?:https?:\/\/)?(?:www\.)?(?:(?:youtube.com\/(?:(?:watch\?v=)|(?:embed\/))([a-zA-Z0-9-]{11}))|(?:youtu.be\/([a-zA-Z0-9-]{11})))/;
 
 		const match = url.match(regExp);
 		const videoId = match ? match[1] : undefined;

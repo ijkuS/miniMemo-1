@@ -1,4 +1,4 @@
-# Process Note of MiniMemo App 
+# Process Note of MiniMemo App
 
 MiniMemo is a memo application project with HTML, CSS, and TypeScript.
 This Process Note aims to document the development process of the MiniMemo app.
@@ -47,7 +47,7 @@ Users should be able to:
 
 ### Links
 
--    gitHub URL: 
+-    gitHub URL:
 -    Live Site URL: [Add live site URL here](https://your-live-site-url.com)
 
 ## My process
@@ -107,9 +107,9 @@ Users should be able to:
 -    Mobile-first workflow
 -    [TypeScript](https://www.typescriptlang.org/)
 
-### Challenges and Lessons
+## Challenges and Lessons
 
-#### TypeScript environment Preparation
+### 1. TypeScript environment Preparation
 
 -    tsc watch mode and init for making tsconfig.json
 -    Set up tsconfig.json
@@ -120,17 +120,14 @@ Users should be able to:
 <script type="module" src="./build/app.js" defer></script>
 ```
 
--    `app.ts` : app main display
-     -    `class App`
-
-#### 1. Component planning for OOP
+### 2. Component planning for OOP
 
 Before starting the project, I tried to plan the basic tree of the components for its relations.
 
 **Set up the project structure with essential files**
 
 -    `app.ts` : app main display
-     -    `class App`
+     -    class App
 -    `page.ts` : ul
      `class PageComponent`
 -    `image.ts` : image list item section
@@ -158,13 +155,35 @@ export class PageComponent extends BaseComponent<HTMLUListElement> {
 }
 ```
 
-#### 2. Use RegExp to extract videoId from URL
+### 3. File organization
+
+Even this project is not large project, I tried to organize folders and files to understand well.
+
+example of file tree at planning stage
+
+```
+src
+ ┣ components
+ ┃ ┣ pages
+ ┃ ┃ ┣ item
+ ┃ ┃ ┃ ┣ image.ts
+ ┃ ┃ ┃ ┣ note.ts
+ ┃ ┃ ┃ ┣ todo.ts
+ ┃ ┃ ┃ ┗ video.ts
+ ┃ ┃ ┗ page.ts
+ ┃ ┗ component.ts
+ ┗ app.ts
+```
+
+### 4. Use RegExp to extract videoId from URL
 
 The following are several possible formats for YouTube URL attachments:
 
--    https://www.youtube.com/watch?v=videoId
--    https://youtu.be/videoId
--    https://www.youtube.com/embed/videoId
+```
+1.    https://www.youtube.com/watch?v=videoId
+2.    https://youtu.be/videoId
+3.    https://www.youtube.com/embed/videoId
+```
 
 **Solution:**
 By utilizing [Regular Expression](https://regexr.com/), the `videoId` can be extracted from the URL provided by users. Using the extracted `videoId`, a new URL is generated to embed the video.
@@ -181,6 +200,55 @@ const regExp = /(?:youtu\.be\/|youtube\.com\/.*[?&]v=)([a-zA-Z0-9_-]{11})/;
 const regExp =
 	/^(?:https?:\/\/)?(?:www\.)?(?:(?:youtube.com\/(?:(?:watch\?v=)|(?:embed\/))([a-zA-Z0-9-]{11}))|(?:youtu.be\/([a-zA-Z0-9-]{11})))/;
 ```
+
+### 5. Purpose of creating 'PageItemComponent'
+
+The purpose of creating PageItemComponent is to separate the content components (such as Note, Image, Video, or Todo) from additional functionality like the close button. This approach allows for better control over features without directly embedding them within the content itself.
+
+Had the close button been added directly to each component, managing different display modes—such as a preview mode where the close button is unnecessary—would have required additional, repetitive logic within each component. This could lead to increased complexity and reduced maintainability.
+
+By using PageItemComponent to encapsulate the content, shared features like the close button are implemented once, ensuring a cleaner, more maintainable codebase. This structure also enhances flexibility, making it easier to adapt to future requirements or extend functionality.
+
+(a list item structure by using PageItemComponent)
+```html
+<li class="page-item">
+	<div class="page-item__controls">
+		<button class="close">×</button>
+	</div>
+	<section class="page-item__body">
+		<section class="image">
+			<div class="image__holder">
+				<img
+					class="image__thumbnail"
+					src="https://picsum.photos/600/300"
+					alt="Image Title" />
+			</div>
+			<h2 class="image__title">Image Title</h2>
+			<p class="image__description">Image Description</p>
+		</section>
+	</section>
+</li>
+```
+
+### 6. Role of interface 'Composable' and 'Component'
+
+Interfaces in TypeScript help reduce dependencies between classes, making your code more flexible and easier to maintain. Instead of classes directly knowing and depending on each other, they communicate through interfaces.
+
+When classes are tightly connected, changing one class can force you to update many other parts of your code. By using interfaces, you define a set of rules that multiple classes can follow. This way, you can swap out one class for another without changing everything that relies on it.
+
+In short, interfaces make your code more flexible, allowing you to easily update or extend it without breaking everything else.
+
+### 7. Role of closeListener
+
+-    **The Role of closeListener**
+     The closeListener in PageItemComponent is designed to handle the event when the close button is clicked. It serves as a variable that holds a callback function, which is executed upon the button's press. This separation of concerns allows for better flexibility, as the PageItemComponent can delegate specific actions—such as removing itself—to external logic, rather than managing it internally.
+-    **What happens without closeListener?**  
+     Without the closeListener, you would need to embed the logic for removing the item directly within PageItemComponent. However, this approach tightly couples the component with the behavior of removing itself, which reduces the overall flexibility and reusability of the structure.
+
+**Solution:**
+
+-    Create `closeListener` `type OnCloseListener` `setOnCloseListener()`
+-    Create `removeFrom(parent)` at interface Component: an API that removes itself from parent
 
 ## Future Improvements
 
