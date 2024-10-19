@@ -1,7 +1,7 @@
 # MiniMemo App - WIP
 
 A memo application project with HTML, CSS, and TypeScript.
-You can see more details on the [PROCESS_NOTE.md] which aims to document the development process of the MiniMemo app.
+You can see more details on the **[PROCESS_NOTE.md](https://github.com/ijkuS/miniMemo-1/blob/master/PROCESS_NOTE.md)** which aims to document the development process of the MiniMemo app.
 
 ## Table of contents
 

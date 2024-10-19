@@ -243,9 +243,10 @@ In short, interfaces make your code more flexible, allowing you to easily update
 
 -    **The Role of closeListener**
      The closeListener in PageItemComponent is designed to handle the event when the close button is clicked.
+
      It serves as a variable that holds a callback function, which is executed upon the button's press.
-     This separation of concerns allows for better flexibility, as the PageItemComponent can
-     delegate specific actions—such as removing itself—to external logic, rather than managing it internally.
+     This separation of concerns allows for better flexibility, as the PageItemComponent can delegate specific actions—such as removing itself—to external logic, rather than managing it internally.
+
 -    **What happens without closeListener?**  
      Without the closeListener, you would need to embed the logic for removing the item directly
      within PageItemComponent. However, this approach tightly couples the component
@@ -265,6 +266,11 @@ In short, interfaces make your code more flexible, allowing you to easily update
 -    **Solution:** Create an interface, SectionContainer, to represent and define the key specifications of PageItemComponent.
      Instead of directly using PageItemComponent in PageComponent, use the SectionContainer interface type.
      Now, PageComponent can work with any class that follows the SectionContainer interface, making it a more flexible and adaptable component.
+
+### 9. Dialog
+
+
+### Difference between 'onclick' and 'addEventListener'
 
 ## Future Improvements
 
