@@ -210,6 +210,7 @@ Had the close button been added directly to each component, managing different d
 By using PageItemComponent to encapsulate the content, shared features like the close button are implemented once, ensuring a cleaner, more maintainable codebase. This structure also enhances flexibility, making it easier to adapt to future requirements or extend functionality.
 
 (a list item structure by using PageItemComponent)
+
 ```html
 <li class="page-item">
 	<div class="page-item__controls">
@@ -241,14 +242,29 @@ In short, interfaces make your code more flexible, allowing you to easily update
 ### 7. Role of closeListener
 
 -    **The Role of closeListener**
-     The closeListener in PageItemComponent is designed to handle the event when the close button is clicked. It serves as a variable that holds a callback function, which is executed upon the button's press. This separation of concerns allows for better flexibility, as the PageItemComponent can delegate specific actions—such as removing itself—to external logic, rather than managing it internally.
+     The closeListener in PageItemComponent is designed to handle the event when the close button is clicked.
+     It serves as a variable that holds a callback function, which is executed upon the button's press.
+     This separation of concerns allows for better flexibility, as the PageItemComponent can
+     delegate specific actions—such as removing itself—to external logic, rather than managing it internally.
 -    **What happens without closeListener?**  
-     Without the closeListener, you would need to embed the logic for removing the item directly within PageItemComponent. However, this approach tightly couples the component with the behavior of removing itself, which reduces the overall flexibility and reusability of the structure.
+     Without the closeListener, you would need to embed the logic for removing the item directly
+     within PageItemComponent. However, this approach tightly couples the component
+     with the behavior of removing itself, which reduces the overall flexibility and reusability of the structure.
 
 **Solution:**
 
 -    Create `closeListener` `type OnCloseListener` `setOnCloseListener()`
 -    Create `removeFrom(parent)` at interface Component: an API that removes itself from parent
+
+### 8. Refactoring: Dependency Injection
+
+**Decoupling Classes**
+
+-    Issue: Inside PageComponent, the PageItemComponent was being created directly.
+     There was no use of dependency injection (DI), leading to excessive coupling between the classes.
+-    **Solution:** Create an interface, SectionContainer, to represent and define the key specifications of PageItemComponent.
+     Instead of directly using PageItemComponent in PageComponent, use the SectionContainer interface type.
+     Now, PageComponent can work with any class that follows the SectionContainer interface, making it a more flexible and adaptable component.
 
 ## Future Improvements
 
