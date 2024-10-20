@@ -283,6 +283,85 @@ In short, interfaces make your code more flexible, allowing you to easily update
 
 ### 9. Dialog
 
+### Refactoring: Dialog
+
+-    Issue: The current code has a strong coupling with MediaSectionInput and TextSectionInput, which reduces scalability.
+
+-    **Solution:** Create an interface to facilitate communication within `dialog.ts`
+
+
+```
+// 'app.ts' snippet has coupling issue 
+
+type InputComponentConstructor<T extends MediaSectionInput | TextSectionInput> =
+	{
+		new (): T;
+	};
+class App {
+	// private readonly page: PageComponent;
+	private readonly page: Component & Composable;
+	constructor(appRoot: HTMLElement, private dialogRoot: HTMLElement) {
+		this.page = new PageComponent(PageItemComponent);
+		this.page.attachTo(appRoot);
+
+		this.bindElementToDialog<MediaSectionInput>(
+			'#new-image',
+			MediaSectionInput,
+			(input: MediaSectionInput) =>
+				new ImageComponent(input.title, input.body, input.url)
+		);
+		this.bindElementToDialog<MediaSectionInput>(
+			'#new-video',
+			MediaSectionInput,
+			(input: MediaSectionInput) =>
+				new VideoComponent(input.title, input.body, input.url)
+		);
+		this.bindElementToDialog<TextSectionInput>(
+			'#new-note',
+			TextSectionInput,
+			(input: TextSectionInput) =>
+				new NoteComponent(input.title, input.body)
+		);
+		this.bindElementToDialog<TextSectionInput>(
+			'#new-todo',
+			TextSectionInput,
+			(input: TextSectionInput) =>
+				new TodoComponent(input.title, input.body)
+		);
+	}
+	private bindElementToDialog<
+		T extends MediaSectionInput | TextSectionInput
+	>(
+		selector: string,
+		InputComponent: InputComponentConstructor<T>,
+		createComponent: (input: T) => Component
+	) {
+		const button = document.querySelector(selector)! as HTMLButtonElement;
+		button.addEventListener('click', () => {
+			const dialog = new InputDialog();
+			const inputSection = new InputComponent();
+			dialog.addChild(inputSection);
+
+			dialog.setOnCloseListener(() => {
+				dialog.removeFrom(this.dialogRoot);
+			});
+			dialog.setOnSubmitListener(() => {
+				const createdComponent = createComponent(inputSection);
+				this.page.addChild(createdComponent);
+				dialog.removeFrom(this.dialogRoot);
+			});
+			dialog.attachTo(this.dialogRoot);
+		});
+	}
+}
+
+new App(document.querySelector('.document')! as HTMLElement, document.body);
+```
+
+```
+
+```
+
 ### Difference between 'onclick' and 'addEventListener'
 
 ### UI Tips: border-radius and `overflow: hidden`

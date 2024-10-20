@@ -13,13 +13,14 @@ import {
 	PageItemComponent,
 } from './components/pages/page.js';
 
-type InputComponentConstructor<T extends Component> = {
-	new (): T;
-};
+type InputComponentConstructor<T extends MediaSectionInput | TextSectionInput> =
+	{
+		new (): T;
+	};
 class App {
 	// private readonly page: PageComponent;
 	private readonly page: Component & Composable;
-	constructor(appRoot: HTMLElement, dialogRoot: HTMLElement) {
+	constructor(appRoot: HTMLElement, private dialogRoot: HTMLElement) {
 		this.page = new PageComponent(PageItemComponent);
 		this.page.attachTo(appRoot);
 
@@ -27,36 +28,33 @@ class App {
 			'#new-image',
 			MediaSectionInput,
 			(input: MediaSectionInput) =>
-				new ImageComponent(input.title, input.body, input.url),
-			dialogRoot
+				new ImageComponent(input.title, input.body, input.url)
 		);
 		this.bindElementToDialog<MediaSectionInput>(
 			'#new-video',
 			MediaSectionInput,
 			(input: MediaSectionInput) =>
-				new VideoComponent(input.title, input.body, input.url),
-			dialogRoot
+				new VideoComponent(input.title, input.body, input.url)
 		);
 		this.bindElementToDialog<TextSectionInput>(
 			'#new-note',
 			TextSectionInput,
 			(input: TextSectionInput) =>
-				new NoteComponent(input.title, input.body),
-			dialogRoot
+				new NoteComponent(input.title, input.body)
 		);
 		this.bindElementToDialog<TextSectionInput>(
 			'#new-todo',
 			TextSectionInput,
 			(input: TextSectionInput) =>
-				new TodoComponent(input.title, input.body),
-			dialogRoot
+				new TodoComponent(input.title, input.body)
 		);
 	}
-	private bindElementToDialog<T extends Component>(
+	private bindElementToDialog<
+		T extends MediaSectionInput | TextSectionInput
+	>(
 		selector: string,
 		InputComponent: InputComponentConstructor<T>,
-		createComponent: (input: T) => Component,
-		dialogRoot: HTMLElement
+		createComponent: (input: T) => Component
 	) {
 		const button = document.querySelector(selector)! as HTMLButtonElement;
 		button.addEventListener('click', () => {
@@ -65,14 +63,14 @@ class App {
 			dialog.addChild(inputSection);
 
 			dialog.setOnCloseListener(() => {
-				dialog.removeFrom(dialogRoot);
+				dialog.removeFrom(this.dialogRoot);
 			});
 			dialog.setOnSubmitListener(() => {
 				const createdComponent = createComponent(inputSection);
 				this.page.addChild(createdComponent);
-				dialog.removeFrom(dialogRoot);
+				dialog.removeFrom(this.dialogRoot);
 			});
-			dialog.attachTo(dialogRoot);
+			dialog.attachTo(this.dialogRoot);
 		});
 	}
 }
