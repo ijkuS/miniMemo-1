@@ -11,20 +11,28 @@
 		<script type="module" src="./build/app.js" defer></script>
 	</head>
 	<body>
-		<header class="header">
-			<h1 class="app-title">MiniMemo</h1>
-			<nav class="navbar-buttons">
-				<button id="new-image">Image</button>
-				<button id="new-video">Video</button>
-				<button id="new-note">Note</button>
-				<button id="new-todo">Todo</button>
-			</nav>
-		</header>
-		<main class="document"></main>
-		<footer class="footer">
-			<p>© Noej Ijkus. All rights reserved.</p>
-		</footer>
+		<div class="app">
+			<header class="banner">
+				<h1 class="banner__title">MiniMemo</h1>
+				<nav class="navbar">
+					<button class="create-button" id="new-image">
+						Image
+					</button>
+					<button class="create-button" id="new-video">
+						Video
+					</button>
+					<button class="create-button" id="new-note">
+						Note
+					</button>
+					<button class="create-button" id="new-todo">
+						Todo
+					</button>
+				</nav>
+			</header>
+			<main class="document"></main>
+			<footer class="footer">
+				<p>© Noej Ijkus. All rights reserved.</p>
+			</footer>
+		</div>
 	</body>
 </html>
-
-

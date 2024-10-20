@@ -14,6 +14,7 @@ export class InputDialog
 		super(`<dialog class="dialog">
                <div class="dialog__container">
                   <div class="dialog__controls">
+                     <h2 class="new-memo__title">New memo</h2>
                      <button class="close">&times</button>
                   </div>
                   <div class="dialog__body"></div>

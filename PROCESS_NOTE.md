@@ -70,12 +70,22 @@ Users should be able to:
 
 #### App UX/UI Planning - SPA
 
-```html
-- header / navbar - Logo - Buttons - Image button (to add new Image memo) -
-Video button (to add new Video memo) - Note button (to add new Note memo) - Todo
-button (to add new Todo memo) - (Optional) Toggle button for dark mode and light
-mode - (Optional) Search input - (Optional) Login/Logout - main - list of memos
-- footer - license information
+```
+-    header / navbar
+     -    Logo
+     -    Buttons
+     -    Image button (to add new Image memo)
+     -    Video button (to add new Video memo)
+     -    Note button (to add new Note memo)
+     -    Todo button (to add new Todo memo)
+     -    (Optional) Toggle button for dark mode and light mode
+     -    (Optional) Search input
+     -    (Optional) Login/Logout
+
+-    main
+     -    list of memos
+-    footer
+     -    license information
 ```
 
 #### Basic interaction planning
@@ -275,9 +285,23 @@ In short, interfaces make your code more flexible, allowing you to easily update
 
 ### Difference between 'onclick' and 'addEventListener'
 
+### UI Tips: border-radius and `overflow: hidden`
+
 ## Future Improvements
+- Combine separate buttons into a single "Add" button that can handle multiple note types, enhancing the overall user experience.
 
 ## Useful resources
+
+**UI Design References**
+
+-    [Google design guidelines for developers](https://developers.google.com/assistant/interactivecanvas/design)
+-    [Google Material 3](https://m3.material.io/)
+
+**Color References**
+
+-    [Google color palette](https://partnermarketinghub.withgoogle.com/brands/google-news/visual-identity/color-palette/)
+-    [TailwindCSS color palette](https://tailwindcss.com/docs/customizing-colors)
+-    [material ui](https://materialui.co/colors)
 
 ## Author
 
