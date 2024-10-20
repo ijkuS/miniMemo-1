@@ -1,5 +1,9 @@
 import { Component } from './components/component.js';
-import { InputDialog } from './components/dialog/dialog.js';
+import {
+	InputDialog,
+	MediaData,
+	TextData,
+} from './components/dialog/dialog.js';
 import { MediaSectionInput } from './components/dialog/input/media-input.js';
 import { TextSectionInput } from './components/dialog/input/text-input.js';
 import { ImageComponent } from './components/pages/item/image.js';
@@ -13,10 +17,10 @@ import {
 	PageItemComponent,
 } from './components/pages/page.js';
 
-type InputComponentConstructor<T extends MediaSectionInput | TextSectionInput> =
-	{
-		new (): T;
-	};
+// Let's use an interface without unnecessarily restricting the style
+type InputComponentConstructor<T extends (MediaData | TextData) & Component> = {
+	new (): T;
+};
 class App {
 	// private readonly page: PageComponent;
 	private readonly page: Component & Composable;
@@ -49,9 +53,7 @@ class App {
 				new TodoComponent(input.title, input.body)
 		);
 	}
-	private bindElementToDialog<
-		T extends MediaSectionInput | TextSectionInput
-	>(
+	private bindElementToDialog<T extends (MediaData | TextData) & Component>(
 		selector: string,
 		InputComponent: InputComponentConstructor<T>,
 		createComponent: (input: T) => Component
