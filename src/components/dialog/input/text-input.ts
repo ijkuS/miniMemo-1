@@ -9,7 +9,7 @@ export class TextSectionInput extends BaseComponent<HTMLElement> {
                </section>
                <section class="form__container">
                   <label for="body">Description</label>
-                  <input type="text" id="body" />
+                  <textarea id="body"></textarea>
                </section>
              </div>`);
 	}
