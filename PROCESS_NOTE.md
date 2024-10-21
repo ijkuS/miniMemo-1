@@ -1,6 +1,7 @@
 # Process Note of MiniMemo App
 
 MiniMemo is a memo application project with HTML, CSS, and TypeScript.
+
 This Process Note aims to document the development process of the MiniMemo app.
 
 ## Table of contents
@@ -25,10 +26,10 @@ This Process Note aims to document the development process of the MiniMemo app.
      -    [5. Purpose of creating PageItemComponent](#5-purpose-of-creating-pageitemcomponent)
      -    [6. Role of interface 'Composable' and 'Component'](#6-role-of-interface-composable-and-component)
      -    [7. Role of closeListener](#7-role-of-closelistener)
-     -    [8. Refactoring: Dependency Injection](#8-refactoring-dependency-injection)
-     -    [9. Refactoring: Dialog](#9-refactoring-dialog)
+     -    [8. Difference between 'onclick' and 'addEventListener'](#8-difference-between-onclick-and-addeventlistener)
+     -    [9. Refactoring: Dependency Injection](#9-refactoring-dependency-injection)
+     -    [10. Refactoring: Dialog](#10-refactoring-dialog)
 
-     -    [Difference between 'onclick' and 'addEventListener'](#difference-between-onclick-and-addeventlistener)
      -    [[CSS Tips] border-radius and `overflow: hidden`](#css-tips-border-radius-and-overflow-hidden)
      -    [[CSS Tips] Scroll bar styling](#css-tips-scroll-bar-styling)
 
@@ -103,23 +104,27 @@ Users should be able to:
       → update the main list on the board
 ```
 
-> -    Click Note & Todo button (text-section)
->      → popup input window (dialog)
->      → input: title / description(body)
->      → add button click
->      → update the main list on the board
+```
+-    Click Note & Todo button (text-section)
+      → popup input window (dialog)
+      → input: title / description(body)
+      → add button click
+      → update the main list on the board
+```
 
-> -    The composition of the list of memos
->
->           - a memo box of media-section
->                -    'delete' button
->                -    Title
->                -    Thumbnail of image or iframe of video
->
->           -  a memo box of text-section
->                -    'delete' button
->                -    Title
->                -    Body (description)
+```
+-    The composition of the list of memos
+
+           - a memo box of media-section
+                -    'delete' button
+                -    Title
+                -    Thumbnail of image or iframe of video
+
+           -  a memo box of text-section
+                -    'delete' button
+                -    Title
+                -    Body (description)
+```
 
 #### Technical planning
 
@@ -127,6 +132,21 @@ Users should be able to:
 -    CSS custom properties
 -    Mobile-first workflow
 -    [TypeScript](https://www.typescriptlang.org/)
+
+#### Part 1: Must have features
+
+-    See all memos on the homepage
+     -    `app.ts`: main page
+-    Add a memo with an image, a video, a note, a todo on the homepage
+     -    Use Dialog
+-    Delete each memo
+     -    Delete the last child element itself
+
+#### Part 2: Good to have features
+
+-    Edit each memo list item
+     -    make Edit button
+     -    require list id -> find the list id and edit
 
 ## Challenges and Lessons
 
@@ -183,8 +203,30 @@ Even this project is not large project, I tried to organize folders and files to
 example of file tree at planning stage
 
 ```
+// Initial file Tree
 src
  ┣ components
+ ┃ ┣ pages
+ ┃ ┃ ┣ item
+ ┃ ┃ ┃ ┣ image.ts
+ ┃ ┃ ┃ ┣ note.ts
+ ┃ ┃ ┃ ┣ todo.ts
+ ┃ ┃ ┃ ┗ video.ts
+ ┃ ┃ ┗ page.ts
+ ┃ ┗ component.ts
+ ┗ app.ts
+```
+
+```
+// File tree before adding Edit feature
+
+src
+ ┣ components
+ ┃ ┣ dialog
+ ┃ ┃ ┣ input
+ ┃ ┃ ┃ ┣ media-input.ts
+ ┃ ┃ ┃ ┗ text-input.ts
+ ┃ ┃ ┗ dialog.ts
  ┃ ┣ pages
  ┃ ┃ ┣ item
  ┃ ┃ ┃ ┣ image.ts
@@ -278,7 +320,9 @@ In short, interfaces make your code more flexible, allowing you to easily update
 -    Create `closeListener` `type OnCloseListener` `setOnCloseListener()`
 -    Create `removeFrom(parent)` at interface Component: an API that removes itself from parent
 
-### 8. Refactoring: Dependency Injection
+### 8. Difference between 'onclick' and 'addEventListener'
+
+### 9. Refactoring: Dependency Injection
 
 **Decoupling Classes**
 
@@ -288,7 +332,7 @@ In short, interfaces make your code more flexible, allowing you to easily update
      Instead of directly using PageItemComponent in PageComponent, use the SectionContainer interface type.
      Now, PageComponent can work with any class that follows the SectionContainer interface, making it a more flexible and adaptable component.
 
-### 9. Refactoring: Dialog
+### 10. Refactoring: Dialog
 
 -    Issue: The current code has a strong coupling with MediaSectionInput and TextSectionInput, which reduces scalability.
 
@@ -428,9 +472,7 @@ class App {
 new App(document.querySelector('.document')! as HTMLElement, document.body);
 ```
 
-###
-
-### Difference between 'onclick' and 'addEventListener'
+### Edit memo item
 
 ### [CSS Tips] border-radius and `overflow: hidden`
 
@@ -462,7 +504,8 @@ new App(document.querySelector('.document')! as HTMLElement, document.body);
 
 ## Future Improvements
 
--    Combine separate buttons into a single "Add" button that can handle multiple note types, enhancing the overall user experience.
+-    Combine the separate buttons into a single "Add" button that handles multiple note types, improving the overall user experience.
+-    Currently, the video URL support is limited to YouTube. I plan to extend this functionality to handle other video URL types.
 
 ## Useful resources
 
@@ -475,6 +518,10 @@ new App(document.querySelector('.document')! as HTMLElement, document.body);
 -    [Google color palette](https://partnermarketinghub.withgoogle.com/brands/google-news/visual-identity/color-palette/)
 -    [TailwindCSS color palette](https://tailwindcss.com/docs/customizing-colors)
 -    [material ui](https://materialui.co/colors)
+
+**VSC Tips**
+
+-    [Multi selections](https://code.visualstudio.com/docs/editor/codebasics)
 
 ## Author
 
