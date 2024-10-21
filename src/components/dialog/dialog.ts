@@ -3,6 +3,7 @@ import { Composable } from '../pages/page.js';
 
 type OnCloseListener = () => void;
 type OnSubmitListener = () => void;
+type ItemId = { type: 'new' } | { type: 'existing'; id: string };
 
 export interface MediaData {
 	readonly title: string;
@@ -21,17 +22,31 @@ export class InputDialog
 {
 	closeListener?: OnCloseListener;
 	submitListener?: OnSubmitListener;
-	constructor() {
+	protected isEditMode: boolean;
+
+	constructor(protected itemId: ItemId, isEditMode: boolean = false) {
 		super(`<dialog class="dialog">
                <div class="dialog__container">
                   <div class="dialog__controls">
-                     <h2 class="new-memo__title">New memo</h2>
+                     <h2 class="memo__title"></h2>
                      <button class="close">&times</button>
                   </div>
                   <div class="dialog__body"></div>
-                  <button class="submit">ADD</button>
+                  <button class="submit">${isEditMode ? 'Edit' : 'Add'}</button>
                </div>
              </dialog>`);
+		this.isEditMode = isEditMode; // initilize isEditmode
+
+		const memoTitle = this.element.querySelector(
+			'.memo__title'
+		)! as HTMLHeadingElement;
+		//set the dialog title based on whether it's a new or existing item
+		if (itemId.type === 'new') {
+			memoTitle.textContent = 'New memo';
+		} else {
+			memoTitle.textContent = 'Edit memo';
+		}
+
 		const dialogCloseBtn = this.element.querySelector(
 			'.close'
 		)! as HTMLButtonElement;

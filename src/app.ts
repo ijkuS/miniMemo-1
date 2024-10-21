@@ -80,7 +80,8 @@ class App {
 	) {
 		const button = document.querySelector(selector)! as HTMLButtonElement;
 		button.addEventListener('click', () => {
-			const dialog = new InputDialog();
+			// 'new' for new items
+			const dialog = new InputDialog({type:'new'}, false);
 			const inputSection = new InputComponent();
 			dialog.addChild(inputSection);
 

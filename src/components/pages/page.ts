@@ -1,5 +1,6 @@
 import { BaseComponent, Component } from '../component.js';
-import { EditDialog } from '../dialog/edit/dialog-edit.js';
+import { InputDialog } from '../dialog/dialog.js';
+// import { EditDialog } from '../dialog/edit/dialog-edit.js';
 
 export interface Composable {
 	addChild(child: Component): void;
@@ -102,8 +103,12 @@ export class PageComponent // <ul>
 		});
 	}
 	openEditDialog(itemId: string) {
-		const editDialog = new EditDialog(itemId); // Pass the itemId to the dialog
+		const editDialog = new InputDialog(
+			{ type: 'existing', id: itemId },
+			true
+		); // Pass the itemId to the dialog
 		editDialog.attachTo(document.body); // Attach the dialog to the document
+
 		editDialog.setOnSubmitListener(() => {
 			editDialog.removeFrom(document.body);
 		});
