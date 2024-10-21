@@ -24,30 +24,17 @@ export class InputDialog
 	closeListener?: OnCloseListener;
 	submitListener?: OnSubmitListener;
 
-	protected isEditMode: boolean;
-
-	constructor(protected itemId: ItemId, isEditMode: boolean = false) {
+	constructor() {
 		super(`<dialog class="dialog">
                <div class="dialog__container">
                   <div class="dialog__controls">
-                     <h2 class="memo__title"></h2>
+                     <h2 class="memo__title">New memo</h2>
                      <button class="close">&times</button>
                   </div>
                   <div class="dialog__body"></div>
-                  <button class="submit">${isEditMode ? 'Edit' : 'Add'}</button>
+                  <button class="submit">ADD</button>
                </div>
              </dialog>`);
-		this.isEditMode = isEditMode; // initilize isEditmode
-
-		const memoTitle = this.element.querySelector(
-			'.memo__title'
-		)! as HTMLHeadingElement;
-		//set the dialog title based on whether it's a new or existing item
-		if (itemId.type === 'new') {
-			memoTitle.textContent = 'New memo';
-		} else {
-			memoTitle.textContent = 'Edit memo';
-		}
 
 		const dialogCloseBtn = this.element.querySelector(
 			'.close'
@@ -59,9 +46,7 @@ export class InputDialog
 			'.submit'
 		)! as HTMLButtonElement;
 		submitBtn.onclick = () => {
-			// this.submitListener && this.submitListener();
-			// Call the correct listener based on mode
-
+			this.submitListener && this.submitListener();
 		};
 	}
 	setOnCloseListener(listener: OnCloseListener) {

@@ -1,8 +1,4 @@
 import { BaseComponent, Component } from '../component.js';
-// import { InputDialog } from '../dialog/dialog.js';
-import { EditDialog } from '../dialog/edit/edit-dialog.js';
-import { editPageItem } from '../dialog/edit/editPageItem.js';
-// import { EditDialog } from '../dialog/edit/dialog-edit.js';
 
 export interface Composable {
 	addChild(child: Component): void;
@@ -98,28 +94,6 @@ export class PageComponent // <ul>
 		item.attachTo(this.element, 'beforeend');
 		item.setOnCloseListener(() => {
 			item.removeFrom(this.element);
-		});
-		item.setOnEditListener((itemId: string) => {
-			// console.log(`setOnEditListener is working, itemID: ${itemId}`);
-			editPageItem(itemId);
-
-			// this.openEditDialog(itemId);
-		});
-	}
-	openEditDialog(itemId: string) {
-		// const editDialog = new EditDialog(
-		// 	{ type: 'existing', id: itemId },
-		// 	true
-		// );
-		const editDialog = new EditDialog(itemId);
-
-		editDialog.attachTo(document.body); // Attach the dialog to the document
-
-		editDialog.setOnSubmitListener(() => {
-			editDialog.removeFrom(document.body);
-		});
-		editDialog.setOnCloseListener(() => {
-			editDialog.removeFrom(document.body);
 		});
 	}
 }
