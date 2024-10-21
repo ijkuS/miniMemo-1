@@ -3,7 +3,8 @@ import { Composable } from '../pages/page.js';
 
 type OnCloseListener = () => void;
 type OnSubmitListener = () => void;
-type ItemId = { type: 'new' } | { type: 'existing'; id: string };
+
+export type ItemId = { type: 'new' } | { type: 'existing'; id: string };
 
 export interface MediaData {
 	readonly title: string;
@@ -22,6 +23,7 @@ export class InputDialog
 {
 	closeListener?: OnCloseListener;
 	submitListener?: OnSubmitListener;
+
 	protected isEditMode: boolean;
 
 	constructor(protected itemId: ItemId, isEditMode: boolean = false) {
@@ -57,7 +59,9 @@ export class InputDialog
 			'.submit'
 		)! as HTMLButtonElement;
 		submitBtn.onclick = () => {
-			this.submitListener && this.submitListener();
+			// this.submitListener && this.submitListener();
+			// Call the correct listener based on mode
+
 		};
 	}
 	setOnCloseListener(listener: OnCloseListener) {
@@ -66,6 +70,7 @@ export class InputDialog
 	setOnSubmitListener(listener: OnSubmitListener) {
 		this.submitListener = listener;
 	}
+
 	addChild(child: Component): void {
 		const body = this.element.querySelector(
 			'.dialog__body'

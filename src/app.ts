@@ -17,12 +17,11 @@ import {
 	PageItemComponent,
 } from './components/pages/page.js';
 
-// Let's use an interface without unnecessarily restricting the style
-type InputComponentConstructor<T extends (MediaData | TextData) & Component> = {
+type InputComponentConstructor<T extends Component> = {
 	new (): T;
 };
+
 class App {
-	// private readonly page: PageComponent;
 	private readonly page: Component & Composable;
 	constructor(appRoot: HTMLElement, private dialogRoot: HTMLElement) {
 		this.page = new PageComponent(PageItemComponent);
@@ -40,7 +39,10 @@ class App {
 			'Video body',
 			'https://www.youtube.com/watch?v=wxnsKBFsPTU'
 		);
-		const mockupData4 = new TodoComponent('Work hard', 'study 8 hours a day')
+		const mockupData4 = new TodoComponent(
+			'Work hard',
+			'study 8 hours a day'
+		);
 		this.page.addChild(mockupData1);
 		this.page.addChild(mockupData2);
 		this.page.addChild(mockupData3);
@@ -80,8 +82,8 @@ class App {
 	) {
 		const button = document.querySelector(selector)! as HTMLButtonElement;
 		button.addEventListener('click', () => {
-			// 'new' for new items
-			const dialog = new InputDialog({type:'new'}, false);
+			const dialog = new InputDialog({ type: 'new' }, false);
+
 			const inputSection = new InputComponent();
 			dialog.addChild(inputSection);
 
@@ -93,6 +95,7 @@ class App {
 				this.page.addChild(createdComponent);
 				dialog.removeFrom(this.dialogRoot);
 			});
+
 			dialog.attachTo(this.dialogRoot);
 		});
 	}

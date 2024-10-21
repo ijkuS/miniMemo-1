@@ -1,5 +1,7 @@
 import { BaseComponent, Component } from '../component.js';
-import { InputDialog } from '../dialog/dialog.js';
+// import { InputDialog } from '../dialog/dialog.js';
+import { EditDialog } from '../dialog/edit/edit-dialog.js';
+import { editPageItem } from '../dialog/edit/editPageItem.js';
 // import { EditDialog } from '../dialog/edit/dialog-edit.js';
 
 export interface Composable {
@@ -52,7 +54,7 @@ export class PageItemComponent //<li>
 					error
 				);
 			}
-			console.log('editbutton is clicked', this.id);
+			// console.log('editbutton is clicked', this.id);
 		};
 
 		const closeBtn = this.element.querySelector(
@@ -71,6 +73,7 @@ export class PageItemComponent //<li>
 	getItemKey(): string {
 		return this.id;
 	}
+	update() {}
 
 	setOnCloseListener(listener: OnCloseListener) {
 		this.closeListener = listener;
@@ -94,19 +97,22 @@ export class PageComponent // <ul>
 		item.addChild(child);
 		item.attachTo(this.element, 'beforeend');
 		item.setOnCloseListener(() => {
-			console.log('setOnCloseListner is working');
 			item.removeFrom(this.element);
 		});
 		item.setOnEditListener((itemId: string) => {
-			console.log(`setOnEditListener is working, itemID: ${itemId}`);
-			this.openEditDialog(itemId);
+			// console.log(`setOnEditListener is working, itemID: ${itemId}`);
+			editPageItem(itemId);
+
+			// this.openEditDialog(itemId);
 		});
 	}
 	openEditDialog(itemId: string) {
-		const editDialog = new InputDialog(
-			{ type: 'existing', id: itemId },
-			true
-		); // Pass the itemId to the dialog
+		// const editDialog = new EditDialog(
+		// 	{ type: 'existing', id: itemId },
+		// 	true
+		// );
+		const editDialog = new EditDialog(itemId);
+
 		editDialog.attachTo(document.body); // Attach the dialog to the document
 
 		editDialog.setOnSubmitListener(() => {
