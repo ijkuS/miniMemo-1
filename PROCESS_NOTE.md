@@ -474,6 +474,24 @@ new App(document.querySelector('.document')! as HTMLElement, document.body);
 
 ### Edit memo item
 
+Initial plan:
+
+-    [x] Assign unique IDs
+-    [x] Add editListener and edit button
+-    Track list item by ID
+-    Open Edit Dialog (Q: Can I use the existing dialog component structure?)
+
+### Unique ID
+
+-    Without using library UUID, I created a function using Date.now and Math.random
+
+```
+		const itemKey = `memo-${Date.now()}-${Math.floor(
+			Math.random() * 100
+		)}`;
+		this.element.setAttribute('id', itemKey);
+```
+
 ### [CSS Tips] border-radius and `overflow: hidden`
 
 ### [CSS Tips] Scroll bar styling

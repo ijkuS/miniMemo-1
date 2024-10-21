@@ -1,4 +1,5 @@
 import { BaseComponent, Component } from '../component.js';
+import { EditDialog } from '../dialog/edit/dialog-edit.js';
 
 export interface Composable {
 	addChild(child: Component): void;
@@ -6,6 +7,7 @@ export interface Composable {
 }
 interface SectionContainer extends Component, Composable {
 	setOnCloseListener(listener: OnCloseListener): void;
+	setOnEditListener(listener: OnEditListener): void;
 }
 type SectionContainerConstructor = {
 	new (): SectionContainer;
@@ -13,14 +15,18 @@ type SectionContainerConstructor = {
 	// SectionContainer 인터페이스의 규격을 따라가는 인스턴스를 생성할 수 있다
 };
 type OnCloseListener = () => void;
+type OnEditListener = (itemId: string) => void;
 
 export class PageItemComponent //<li>
 	extends BaseComponent<HTMLElement>
 	implements SectionContainer
 {
 	private closeListener?: OnCloseListener;
+	private editListener?: OnEditListener;
+	private readonly id: string;
+
 	constructor() {
-		super(`<li class="page-item">
+		super(`<li class="page-item" id="memo-item">
 					<div class="page-item__controls">
 						<button class="edit">Edit</button>
 						<button class="close">&times</button>
@@ -28,6 +34,26 @@ export class PageItemComponent //<li>
 					<section class="page-item__body"></section>
 				 </li>
 	`);
+
+		this.id = `memo-${Date.now()}-${Math.floor(Math.random() * 100)}`;
+		this.element.setAttribute('id', this.id);
+
+		// Connect editListener to Edit button
+		const editBtn = this.element.querySelector(
+			'.edit'
+		)! as HTMLButtonElement;
+		editBtn.onclick = () => {
+			try {
+				this.editListener && this.editListener(this.id);
+			} catch (error) {
+				console.error(
+					'Something wrong on itemId or editListener',
+					error
+				);
+			}
+			console.log('editbutton is clicked', this.id);
+		};
+
 		const closeBtn = this.element.querySelector(
 			'.close'
 		)! as HTMLButtonElement;
@@ -41,8 +67,15 @@ export class PageItemComponent //<li>
 		)! as HTMLElement;
 		child.attachTo(container);
 	}
+	getItemKey(): string {
+		return this.id;
+	}
+
 	setOnCloseListener(listener: OnCloseListener) {
 		this.closeListener = listener;
+	}
+	setOnEditListener(listener: OnEditListener) {
+		this.editListener = listener;
 	}
 }
 
@@ -62,6 +95,20 @@ export class PageComponent // <ul>
 		item.setOnCloseListener(() => {
 			console.log('setOnCloseListner is working');
 			item.removeFrom(this.element);
+		});
+		item.setOnEditListener((itemId: string) => {
+			console.log(`setOnEditListener is working, itemID: ${itemId}`);
+			this.openEditDialog(itemId);
+		});
+	}
+	openEditDialog(itemId: string) {
+		const editDialog = new EditDialog(itemId); // Pass the itemId to the dialog
+		editDialog.attachTo(document.body); // Attach the dialog to the document
+		editDialog.setOnSubmitListener(() => {
+			editDialog.removeFrom(document.body);
+		});
+		editDialog.setOnCloseListener(() => {
+			editDialog.removeFrom(document.body);
 		});
 	}
 }
