@@ -26,6 +26,11 @@ This Process Note aims to document the development process of the MiniMemo app.
      -    [6. Role of interface 'Composable' and 'Component'](#6-role-of-interface-composable-and-component)
      -    [7. Role of closeListener](#7-role-of-closelistener)
      -    [8. Refactoring: Dependency Injection](#8-refactoring-dependency-injection)
+     -    [9. Refactoring: Dialog](#9-refactoring-dialog)
+
+     -    [Difference between 'onclick' and 'addEventListener'](#difference-between-onclick-and-addeventlistener)
+     -    [[CSS Tips] border-radius and `overflow: hidden`](#css-tips-border-radius-and-overflow-hidden)
+     -    [[CSS Tips] Scroll bar styling](#css-tips-scroll-bar-styling)
 
 -    [Future Improvements](#future-improvements)
 -    [Useful resources](#useful-resources)
@@ -42,22 +47,22 @@ This Process Note aims to document the development process of the MiniMemo app.
 
 Users should be able to:
 
-**Must have (as a user)**
+**Must have**
 
--    See all memos on the homepage
--    Add a memo with an image, a video, a note, a todo on the homepage
--    Delete each memo
+-    [x] See all memos on the homepage
+-    [x] Add a memo with an image, a video, a note, a todo on the homepage
+-    [x] Delete each memo
 
-**Good to have (as a user)**
+**Good to have**
 
--    Reorder memos with drag & drop motion
--    Filter memos by group (image / video / todo / note)
--    Edit all the memo
+-    [ ] Edit all the memo
+-    [ ] Reorder memos with drag & drop motion
+-    [ ] Filter memos by group (image / video / todo / note)
 
 **Optional**
 
--    Search for a keyword
--    Toggle the color scheme between light and dark mode
+-    [ ] Search for a keyword
+-    [ ] Toggle the color scheme between light and dark mode
 
 ### Links
 
@@ -90,11 +95,13 @@ Users should be able to:
 
 #### Basic interaction planning
 
-> -    Click Image & Video button (media-section)
->      → popup input window (dialog)
->      → input: title / url
->      → add button click
->      → update the main list on the board
+```
+-    Click Image & Video button (media-section)
+      → popup input window (dialog)
+      → input: title / url
+      → add button click
+      → update the main list on the board
+```
 
 > -    Click Note & Todo button (text-section)
 >      → popup input window (dialog)
@@ -281,17 +288,14 @@ In short, interfaces make your code more flexible, allowing you to easily update
      Instead of directly using PageItemComponent in PageComponent, use the SectionContainer interface type.
      Now, PageComponent can work with any class that follows the SectionContainer interface, making it a more flexible and adaptable component.
 
-### 9. Dialog
-
-### Refactoring: Dialog
+### 9. Refactoring: Dialog
 
 -    Issue: The current code has a strong coupling with MediaSectionInput and TextSectionInput, which reduces scalability.
 
 -    **Solution:** Create an interface to facilitate communication within `dialog.ts`
 
-
 ```
-// 'app.ts' snippet has coupling issue 
+// 'app.ts' snippet has coupling issue
 
 type InputComponentConstructor<T extends MediaSectionInput | TextSectionInput> =
 	{
@@ -359,12 +363,102 @@ new App(document.querySelector('.document')! as HTMLElement, document.body);
 ```
 
 ```
+// 'app.ts' snippet after refactoring
+// Use an interface without unnecessarily restricting the style
 
+type InputComponentConstructor<T extends (MediaData | TextData) & Component> = {
+	new (): T;
+};
+class App {
+	// private readonly page: PageComponent;
+	private readonly page: Component & Composable;
+	constructor(appRoot: HTMLElement, private dialogRoot: HTMLElement) {
+		this.page = new PageComponent(PageItemComponent);
+		this.page.attachTo(appRoot);
+
+		this.bindElementToDialog<MediaSectionInput>(
+			'#new-image',
+			MediaSectionInput,
+			(input: MediaSectionInput) =>
+				new ImageComponent(input.title, input.body, input.url)
+		);
+		this.bindElementToDialog<MediaSectionInput>(
+			'#new-video',
+			MediaSectionInput,
+			(input: MediaSectionInput) =>
+				new VideoComponent(input.title, input.body, input.url)
+		);
+		this.bindElementToDialog<TextSectionInput>(
+			'#new-note',
+			TextSectionInput,
+			(input: TextSectionInput) =>
+				new NoteComponent(input.title, input.body)
+		);
+		this.bindElementToDialog<TextSectionInput>(
+			'#new-todo',
+			TextSectionInput,
+			(input: TextSectionInput) =>
+				new TodoComponent(input.title, input.body)
+		);
+	}
+	private bindElementToDialog<T extends (MediaData | TextData) & Component>(
+		selector: string,
+		InputComponent: InputComponentConstructor<T>,
+		createComponent: (input: T) => Component
+	) {
+		const button = document.querySelector(selector)! as HTMLButtonElement;
+		button.addEventListener('click', () => {
+			const dialog = new InputDialog();
+			const inputSection = new InputComponent();
+			dialog.addChild(inputSection);
+
+			dialog.setOnCloseListener(() => {
+				dialog.removeFrom(this.dialogRoot);
+			});
+			dialog.setOnSubmitListener(() => {
+				const createdComponent = createComponent(inputSection);
+				this.page.addChild(createdComponent);
+				dialog.removeFrom(this.dialogRoot);
+			});
+			dialog.attachTo(this.dialogRoot);
+		});
+	}
+}
+
+new App(document.querySelector('.document')! as HTMLElement, document.body);
 ```
+
+###
 
 ### Difference between 'onclick' and 'addEventListener'
 
-### UI Tips: border-radius and `overflow: hidden`
+### [CSS Tips] border-radius and `overflow: hidden`
+
+### [CSS Tips] Scroll bar styling
+
+-    Issue: The scroll bar styling didn’t work as expected.
+
+-    Solution: It is because it was applied to the body. The actual scroll bar is on the .document section, so the styling should be applied there instead.
+
+```css
+.document {
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: var(--color-accent-black);
+}
+.document::-webkit-scrollbar {
+	width: 15px;
+}
+.document::-webkit-scrollbar-track {
+	background: var(--color-accent-black);
+}
+.document::-webkit-scrollbar-thumb {
+	background: var(--color-neutral-grey-800);
+	border: 2px solid var(--color-accent-black);
+	border-radius: var(--border-radius-medium);
+}
+```
 
 ## Future Improvements
 

@@ -28,6 +28,26 @@ class App {
 		this.page = new PageComponent(PageItemComponent);
 		this.page.attachTo(appRoot);
 
+		// mock-up data for TEST ---------------------------------------------
+		const mockupData1 = new ImageComponent(
+			'image title',
+			'image body',
+			'https://images.unsplash.com/photo-1632852702313-f49135ab8c94?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+		);
+		const mockupData2 = new NoteComponent('Note title', 'Note body');
+		const mockupData3 = new VideoComponent(
+			'Video title',
+			'Video body',
+			'https://www.youtube.com/watch?v=wxnsKBFsPTU'
+		);
+		const mockupData4 = new TodoComponent('Work hard', 'study 8 hours a day')
+		this.page.addChild(mockupData1);
+		this.page.addChild(mockupData2);
+		this.page.addChild(mockupData3);
+		this.page.addChild(mockupData4);
+
+		// -------------------------------------------------------------------
+
 		this.bindElementToDialog<MediaSectionInput>(
 			'#new-image',
 			MediaSectionInput,
