@@ -20,6 +20,7 @@ export class InputDialog
 	extends BaseComponent<HTMLElement>
 	implements Composable
 {
+	private _updatedData?: MediaData | TextData;
 	closeListener?: OnCloseListener;
 	submitListener?: OnSubmitListener;
 
@@ -50,7 +51,8 @@ export class InputDialog
 			'.submit'
 		)! as HTMLButtonElement;
 		submitBtn.onclick = () => {
-			console.log('submit button is clicked')
+			console.log('submit button is clicked');
+			this.collectUdatedData();
 			this.submitListener && this.submitListener();
 		};
 	}
@@ -86,8 +88,27 @@ export class InputDialog
 				)! as HTMLInputElement;
 				urlInput.value = this.initialData.url;
 			}
-		} else {
-			console.error('There is no initial data');
 		}
+	}
+	// internal method to collect updated data before submission
+	private collectUdatedData(): void {
+		const title = (
+			this.element.querySelector('#title') as HTMLInputElement
+		).value;
+		const body = (
+			this.element.querySelector('#body') as HTMLTextAreaElement
+		).value;
+
+		if ('url' in this.initialData!) {
+			const url = (
+				this.element.querySelector('#url') as HTMLInputElement
+			).value;
+			this._updatedData = { title, body, url } as MediaData;
+		} else {
+			this._updatedData = { title, body } as TextData;
+		}
+	} // Public method to access the updated data
+	getUpdatedData(): MediaData | TextData | undefined {
+		return this._updatedData;
 	}
 }

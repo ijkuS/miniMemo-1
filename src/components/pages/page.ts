@@ -1,8 +1,7 @@
 import { BaseComponent, Component } from '../component.js';
-import { InputDialog } from '../dialog/dialog.js';
 import { filterExistingItems } from '../dialog/edit/filterExistingItems.js';
-import { MediaSectionInput } from '../dialog/input/media-input.js';
-import { TextSectionInput } from '../dialog/input/text-input.js';
+import { openEditDialog } from '../dialog/edit/openEditDialog.js';
+// import { updatePageItem } from '../dialog/edit/pageItemManager';
 
 export interface Composable {
 	addChild(child: Component): void;
@@ -45,22 +44,10 @@ export class PageItemComponent //<li>
 		const editBtn = this.element.querySelector(
 			'.edit'
 		)! as HTMLButtonElement;
-		// editBtn.onclick = () => {
-		// 	try {
-		// 		this.editListener && this.editListener(this.id);
-		// 		filterExistingItems(this.id);
-		// 	} catch (error) {
-		// 		console.error(
-		// 			'Something wrong on itemId or editListener',
-		// 			error
-		// 		);
-		// 	}
-		// 	console.log('editbutton is clicked', this.id);
-		// };
-		editBtn.onclick = () => {
-			this.editListener && this.editListener(this.id);
-		};
 
+		editBtn.addEventListener('click', () => {
+			this.editListener && this.editListener(this.id);
+		});
 		const closeBtn = this.element.querySelector(
 			'.close'
 		)! as HTMLButtonElement;
@@ -94,9 +81,7 @@ export class PageComponent // <ul>
 		super(`<ul class="page"></ul>`);
 	}
 	addChild(child: Component): void {
-		//const item = new PageItemComponent(); // this is not good part, refactoring later
 		const item = new this.pageItemComponent();
-		// 이제는 어떤 타입의 아이템이라도 인자로 받아 생성이 가능하다
 		item.addChild(child);
 		item.attachTo(this.element, 'beforeend');
 
@@ -110,18 +95,9 @@ export class PageComponent // <ul>
 				console.error('No data found to edit');
 				return;
 			}
-			const isMediaData = 'url' in filteredData;
-			const inputComponent = isMediaData
-				? new MediaSectionInput(filteredData)
-				: new TextSectionInput(filteredData);
 
-			const editDialog = new InputDialog(true, filteredData);
-			editDialog.addChild(inputComponent);
-			editDialog.attachTo(this.dialogRoot);
+			openEditDialog(itemId, filteredData, this.dialogRoot);
 
-			editDialog.setOnCloseListener(() => {
-				editDialog.removeFrom(this.dialogRoot);
-			});
 		});
 	}
 }

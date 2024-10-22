@@ -76,33 +76,6 @@ class App {
 			this.page
 		);
 	}
-	// bindElementToDialog<T extends (MediaData | TextData) & Component>(
-	// 	selector: string,
-	// 	InputComponent: InputComponentConstructor<T>,
-	// 	createComponent: (input: T) => Component,
-	// 	existingComponent?: Component,
-	// 	initialData?: T extends MediaData ? MediaData : TextData
-	// ) {
-	// 	const button = document.querySelector(selector)! as HTMLButtonElement;
-	// 	button.addEventListener('click', () => {
-	// 		// set edit mode if existingComponent is provided
-	// 		const dialog = new InputDialog(!!existingComponent, initialData);
-
-	// 		const inputSection = new InputComponent(initialData);
-	// 		dialog.addChild(inputSection);
-
-	// 		dialog.setOnCloseListener(() => {
-	// 			dialog.removeFrom(this.dialogRoot);
-	// 		});
-	// 		dialog.setOnSubmitListener(() => {
-	// 			const createdComponent = createComponent(inputSection);
-	// 			this.page.addChild(createdComponent);
-	// 			dialog.removeFrom(this.dialogRoot);
-	// 		});
-
-	// 		dialog.attachTo(this.dialogRoot);
-	// 	});
-	// }
 }
 
 new App(document.querySelector('.document')! as HTMLElement, document.body);
