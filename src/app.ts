@@ -17,7 +17,7 @@ import {
 	PageItemComponent,
 } from './components/pages/page.js';
 
-type InputComponentConstructor<T extends Component> = {
+type InputComponentConstructor<T extends (MediaData | TextData) & Component> = {
 	new (): T;
 };
 

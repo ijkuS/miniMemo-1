@@ -4,17 +4,18 @@ import { Composable } from '../pages/page.js';
 type OnCloseListener = () => void;
 type OnSubmitListener = () => void;
 
-export type ItemId = { type: 'new' } | { type: 'existing'; id: string };
+// export type ItemId = { type: 'new' } | { type: 'existing'; id: string };
 
 export interface MediaData {
-	readonly title: string;
-	readonly body: string;
-	readonly url: string;
+	// deleted readonly for edit feature
+	title: string;
+	body: string;
+	url: string;
 }
 
 export interface TextData {
-	readonly title: string;
-	readonly body: string;
+	title: string;
+	body: string;
 }
 
 export class InputDialog

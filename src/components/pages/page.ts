@@ -1,4 +1,5 @@
 import { BaseComponent, Component } from '../component.js';
+import { filterExistingItems } from '../dialog/edit/filterExistingItems.js';
 
 export interface Composable {
 	addChild(child: Component): void;
@@ -44,13 +45,14 @@ export class PageItemComponent //<li>
 		editBtn.onclick = () => {
 			try {
 				this.editListener && this.editListener(this.id);
+				filterExistingItems(this.id);
 			} catch (error) {
 				console.error(
 					'Something wrong on itemId or editListener',
 					error
 				);
 			}
-			// console.log('editbutton is clicked', this.id);
+			console.log('editbutton is clicked', this.id);
 		};
 
 		const closeBtn = this.element.querySelector(
@@ -69,7 +71,6 @@ export class PageItemComponent //<li>
 	getItemKey(): string {
 		return this.id;
 	}
-	update() {}
 
 	setOnCloseListener(listener: OnCloseListener) {
 		this.closeListener = listener;
