@@ -4,8 +4,6 @@ import { Composable } from '../pages/page.js';
 type OnCloseListener = () => void;
 type OnSubmitListener = () => void;
 
-// export type ItemId = { type: 'new' } | { type: 'existing'; id: string };
-
 export interface MediaData {
 	// deleted readonly for edit feature
 	title: string;
@@ -25,15 +23,20 @@ export class InputDialog
 	closeListener?: OnCloseListener;
 	submitListener?: OnSubmitListener;
 
-	constructor() {
+	constructor(
+		protected isEditMode: boolean = false, // Flag to distinguish between Add and Edit Mode
+		protected initialData?: MediaData | TextData //Optional data for edit mode
+	) {
 		super(`<dialog class="dialog">
                <div class="dialog__container">
                   <div class="dialog__controls">
-                     <h2 class="memo__title">New memo</h2>
+                     <h2 class="memo__title">${
+						isEditMode ? 'Edit memo' : 'New memo'
+					}</h2>
                      <button class="close">&times</button>
                   </div>
                   <div class="dialog__body"></div>
-                  <button class="submit">ADD</button>
+                  <button class="submit">${isEditMode ? 'EDIT' : 'ADD'}</button>
                </div>
              </dialog>`);
 
@@ -47,6 +50,7 @@ export class InputDialog
 			'.submit'
 		)! as HTMLButtonElement;
 		submitBtn.onclick = () => {
+			console.log('submit button is clicked')
 			this.submitListener && this.submitListener();
 		};
 	}
@@ -62,5 +66,28 @@ export class InputDialog
 			'.dialog__body'
 		)! as HTMLElement;
 		child.attachTo(body);
+
+		//populate input with initial data if provided (edit mode)
+		if (this.initialData) {
+			const titleInput = this.element.querySelector(
+				'#title'
+			)! as HTMLInputElement;
+			const bodyInput = this.element.querySelector(
+				'#body'
+			)! as HTMLTextAreaElement;
+
+			titleInput.value = this.initialData.title;
+			bodyInput.value = this.initialData.body;
+
+			//check if the data is MediaData(ex. it has a 'url' property)
+			if ('url' in this.initialData) {
+				const urlInput = this.element.querySelector(
+					'#url'
+				)! as HTMLInputElement;
+				urlInput.value = this.initialData.url;
+			}
+		} else {
+			console.error('There is no initial data');
+		}
 	}
 }

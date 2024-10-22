@@ -478,8 +478,45 @@ Initial plan:
 
 -    [x] Assign unique IDs
 -    [x] Add editListener and edit button
--    Track list item by ID
+-    [x] Check existing list item by ID (function filterExistingItems)
 -    Open Edit Dialog (Q: Can I use the existing dialog component structure?)
+
+Plan of function filterExistingItems:
+
+-    [x] function to check and filter existing memo items with itemId
+-    [x] if (itemId) in the current list
+-    [x] -> check if it is MediaData type or TextData by checking existence of img or iframe
+-    [x] Q. (check if using interface MediaData or TextData?) -> Done!
+-    [x] if (mediaData)-> return the data(title, body, url?)
+-    [x] if (textData)-> return the data(title, body)
+
+```
+- Plan of function filterExistingItems
+
+	[x] function to check and filter existing memo items with itemId
+	[x] if (itemId) in the current list
+			-> check if it is MediaData type or TextData by checking existence of img or iframe
+				- Q. (check if using interface MediaData or TextData?) -> Done!
+	[x] if (mediaData)-> get the data(title, body, url?)
+	[x] if (textData)->get the data(title, body)
+
+// Edit a page-item
+// override the data of the page-item
+
+//Q. Can I use bindElementToDialog infra here? (app.ts) since it seems similar
+```
+
+```
+- Interaction of Edit feature 
+
+	- Click an edit button
+	- Get the data of the clicked item (title, body, url(optional))
+	- Open a dialog to edit
+	- Show the current item’s data in the input fields
+	- Edit each data, (title, body, url(optional))
+	- Click Edit Submit button
+	- Override the data from the existing data to the newly input data.
+```
 
 ### Unique ID
 

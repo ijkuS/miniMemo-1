@@ -1,7 +1,8 @@
 import { BaseComponent } from '../../component.js';
+import { TextData } from '../dialog';
 
 export class TextSectionInput extends BaseComponent<HTMLElement> {
-	constructor() {
+	constructor(initialData?: TextData) {
 		super(`<div class="text-input">
                <section class="form__container">
                   <label for="title">Title</label>
@@ -12,6 +13,19 @@ export class TextSectionInput extends BaseComponent<HTMLElement> {
                   <textarea id="body"></textarea>
                </section>
              </div>`);
+
+		const titleInput = this.element.querySelector(
+			'#title'
+		)! as HTMLInputElement;
+		const bodyInput = this.element.querySelector(
+			'#body'
+		)! as HTMLTextAreaElement;
+
+		// If initialData is provided (edit mode), prefill the input fields
+		if (initialData) {
+			titleInput.value = initialData.title;
+			bodyInput.value = initialData.body;
+		}
 	}
 	get title(): string {
 		const element = this.element.querySelector(
@@ -20,9 +34,9 @@ export class TextSectionInput extends BaseComponent<HTMLElement> {
 		return element.value;
 	}
 	get body(): string {
-      const element = this.element.querySelector(
+		const element = this.element.querySelector(
 			'#body'
 		)! as HTMLInputElement;
 		return element.value;
-   }
+	}
 }
