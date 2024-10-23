@@ -9,6 +9,7 @@ which aims to document the development process of the MiniMemo app.
 
 -    [Overview](#overview)
 
+     -    [Screenshot](#screenshot)
      -    [Goal](#goal)
      -    [Links](#links)
 
