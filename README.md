@@ -1,9 +1,11 @@
-# MiniMemo App - WIP
+# MiniMemo App - Work in Progress (WIP)
 
-A memo application project with HTML, CSS, and TypeScript.
+MiniMemo is a lightweight memo application built using HTML, CSS, and TypeScript. 
 
-You can see more details on the **[PROCESS_NOTE.md](https://github.com/ijkuS/miniMemo-1/blob/master/PROCESS_NOTE.md)**
-which aims to document the development process of the MiniMemo app.
+The primary goal of this project is to create a simple yet efficient tool 
+for managing notes, with a focus on clean design and user-friendly features. 
+As a work in progress, this app reflects my learning journey 
+as a front-end web developer and demonstrates key technical concepts.
 
 ## Table of contents
 
@@ -100,8 +102,8 @@ Users should be able to:
 
 ### Links
 
--    gitHub URL:
--    Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+-    gitHub URL: [Noej Ijkus](https://github.com/ijkuS)
+-    Live Site URL: [minimemo App](https://ijkus.github.io/minimemo-1/)
 
 ## My process
 
@@ -726,6 +728,26 @@ body {
 **VSC Tips**
 
 -    [Multi selections](https://code.visualstudio.com/docs/editor/codebasics)
+
+**Git Tips**
+
+-    Change repository name
+
+     -    1. Rename on the setting of the repository
+     -    2. On the terminal, put the command as below
+
+```terminal
+git remote -v
+git remote set-url origin [URL]
+git remote -v
+
+// change your local folder name as same as the new name of the repository
+
+git add .
+
+// URL example
+git remote set-url origin https://github.com/yourId/newRepositoryName
+```
 
 ## Author
 
