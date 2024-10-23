@@ -52,13 +52,25 @@ which aims to document the development process of the MiniMemo app.
 
 ### Screenshot
 
-#### minimemo screenshot - App Main
+#### MiniMemo Screenshot - App Main
 
-![](./assets/screenshots/minimemo_screenshot_Main.jpg =x450)
+Main screen of MiniMemo showing all memos.
+![](./assets/screenshots/minimemo_screenshot_Main.jpg)
 
-#### minimemo screenshot - App Dialog for adding a memo 
+#### MiniMemo Screenshot - App Dialog for adding a memo
 
+Dialog for adding a new memo in MiniMemo.
 ![](./assets/screenshots/minimemo_screenshot_dialog-Add.jpg)
+
+#### MiniMemo Screenshot – Edit Memo Dialog
+
+The dialog allows users to update the memo's title, body, and URL, providing an easy-to-use interface for quick edits.
+![](./assets/screenshots/minimemo_screenshot_dialog-Edit.jpg)
+
+### MiniMemo Screenshot - Updated memo page
+
+Page showing the memo after being edited and updated.
+![](./assets/screenshots/minimemo_screenshot_Updated.jpg)
 
 ### Goal
 
