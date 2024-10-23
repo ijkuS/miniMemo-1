@@ -37,6 +37,8 @@ which aims to document the development process of the MiniMemo app.
      -    [Troubleshooting: Edit a video item](#troubleshooting-edit-a-video-item)
 
      -    [Unique ID](#unique-id)
+     -    [[CSS Tips] SVG file Modification]()
+     -    [[CSS Tips] Checkbox size and color](#css-tips-checkbox-size-and-color)
      -    [[CSS Tips] border-radius and `overflow: hidden`](#css-tips-border-radius-and-overflow-hidden)
      -    [[CSS Tips] Scroll bar styling](#css-tips-scroll-bar-styling)
 
@@ -255,6 +257,32 @@ src
  ┃ ┃ ┣ input
  ┃ ┃ ┃ ┣ media-input.ts
  ┃ ┃ ┃ ┗ text-input.ts
+ ┃ ┃ ┗ dialog.ts
+ ┃ ┣ pages
+ ┃ ┃ ┣ item
+ ┃ ┃ ┃ ┣ image.ts
+ ┃ ┃ ┃ ┣ note.ts
+ ┃ ┃ ┃ ┣ todo.ts
+ ┃ ┃ ┃ ┗ video.ts
+ ┃ ┃ ┗ page.ts
+ ┃ ┗ component.ts
+ ┗ app.ts
+```
+
+```
+// File tree after adding Edit feature
+
+src
+ ┣ components
+ ┃ ┣ dialog
+ ┃ ┃ ┣ edit
+ ┃ ┃ ┃ ┣ filterExistingItems.ts
+ ┃ ┃ ┃ ┣ openEditDialog.ts
+ ┃ ┃ ┃ ┗ updatePageItem.ts
+ ┃ ┃ ┣ input
+ ┃ ┃ ┃ ┣ media-input.ts
+ ┃ ┃ ┃ ┗ text-input.ts
+ ┃ ┃ ┣ bindElementToDialog.ts
  ┃ ┃ ┗ dialog.ts
  ┃ ┣ pages
  ┃ ┃ ┣ item
@@ -626,7 +654,16 @@ body {
 }
 ```
 
-### [CSS Tips] border-radius and `overflow: hidden`
+### [CSS Tips] SVG file Modification
+
+-    You can change the color of an icon by updating the stroke or fill parameter to your desired color.
+-    Although the stroke width of the close icon (×) was the same as the edit icon, the diagonal lines created an optical illusion that made the close icon appear thicker. To achieve visual balance, I adjusted the stroke width of the close icon from 2px to 1.8px in the SVG file.
+
+### [CSS Tips] Using border-radius and overflow: hidden
+
+-    When the app container and header has different background with the rounded border, 'overflow: hidden' property is helpful to automatically fit by the parent's border state.
+-    Why use overflow: hidden? Without overflow: hidden, child elements might spill over the parent’s rounded borders, especially when their background differs from the parent’s. This can result in unsightly corners.
+-    How it works: Applying overflow: hidden forces child elements to respect the parent’s rounded border-radius, effectively trimming any overflow and giving a smooth, seamless appearance.
 
 ### [CSS Tips] Scroll bar styling
 
