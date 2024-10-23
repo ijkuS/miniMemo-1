@@ -2,7 +2,7 @@ import { BaseComponent } from '../../component.js';
 import { TextData } from '../dialog';
 
 export class TextSectionInput extends BaseComponent<HTMLElement> {
-	constructor(initialData?: TextData) {
+	constructor(initialData?: TextData, updatedData?: TextData) {
 		super(`<div class="text-input">
                <section class="form__container">
                   <label for="title">Title</label>
@@ -25,6 +25,10 @@ export class TextSectionInput extends BaseComponent<HTMLElement> {
 		if (initialData) {
 			titleInput.value = initialData.title;
 			bodyInput.value = initialData.body;
+		}
+		if (updatedData) {
+			titleInput.value = updatedData.title;
+			bodyInput.value = updatedData.title;
 		}
 	}
 	get title(): string {

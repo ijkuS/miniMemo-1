@@ -26,24 +26,33 @@ class App {
 
 		// mock-up data for TEST ---------------------------------------------
 		const mockupData1 = new ImageComponent(
-			'image title',
-			'image body',
-			'https://images.unsplash.com/photo-1632852702313-f49135ab8c94?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+			'across the universe',
+			'Images of broken light which dance before me like a million eyes. They call me on and on across the universe',
+			'https://images.unsplash.com/photo-1531700910244-05f8c922877b?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		);
-		const mockupData2 = new NoteComponent('Note title', 'Note body');
+		const mockupData2 = new NoteComponent(
+			'Nostalgia in CityPop in 1980s',
+			'In the bustling metropolis of Tokyo, where the neon lights flicker and the streets are alive with energy, City Pop serves as the soundtrack to life in the big city.'
+		);
 		const mockupData3 = new VideoComponent(
-			'Video title',
-			'Video body',
+			'A rainy night in Tokyo',
+			'Take a lyrical journey through the vibrant streets of Tokyo with Japanese City Pop music.',
 			'https://www.youtube.com/watch?v=wxnsKBFsPTU'
 		);
 		const mockupData4 = new TodoComponent(
-			'Work hard',
-			'Study 8 hours a day'
+			'Team meeting 2pm',
+			'Prepare to show design references'
+		);
+		const mockupData5 = new TodoComponent(
+			'Dentist 5pm',
+			'near the city hall'
 		);
 		this.page.addChild(mockupData1);
 		this.page.addChild(mockupData2);
 		this.page.addChild(mockupData3);
 		this.page.addChild(mockupData4);
+		this.page.addChild(mockupData5);
+
 
 		// -------------------------------------------------------------------
 

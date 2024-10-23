@@ -34,7 +34,7 @@ export function filterExistingItems(
 					)?.textContent || '';
 				const body =
 					mediaInput.querySelector(
-						'.image__description, .video_description'
+						'.image__description, .video__description'
 					)?.textContent || '';
 				const url =
 					mediaInput

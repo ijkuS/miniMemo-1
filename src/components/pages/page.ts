@@ -29,11 +29,15 @@ export class PageItemComponent //<li>
 
 	constructor() {
 		super(`<li class="page-item" id="memo-item">
-					<div class="page-item__controls">
-						<button class="edit" id="edit-item">Edit</button>
-						<button class="close">&times</button>
-					</div>
-					<section class="page-item__body"></section>
+						<div class="page-item__controls">
+							<button class="edit" id="edit-item">
+								<img src="./assets/edit_icon.svg" alt="edit-icon" />
+							</button>
+							<button class="close">
+								<img class="close icon" src="./assets/x_icon.svg" alt="close-icon" />
+							</button>
+						</div>
+						<section class="page-item__body"></section>
 				 </li>
 	`);
 
@@ -95,9 +99,8 @@ export class PageComponent // <ul>
 				console.error('No data found to edit');
 				return;
 			}
-
+			console.log(filteredData, 'this is from page.ts');
 			openEditDialog(itemId, filteredData, this.dialogRoot);
-
 		});
 	}
 }

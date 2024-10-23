@@ -2,7 +2,8 @@
 
 A memo application project with HTML, CSS, and TypeScript.
 
-You can see more details on the **[PROCESS_NOTE.md](https://github.com/ijkuS/miniMemo-1/blob/master/PROCESS_NOTE.md)** which aims to document the development process of the MiniMemo app.
+You can see more details on the **[PROCESS_NOTE.md](https://github.com/ijkuS/miniMemo-1/blob/master/PROCESS_NOTE.md)**
+which aims to document the development process of the MiniMemo app.
 
 ## Table of contents
 
@@ -29,7 +30,12 @@ You can see more details on the **[PROCESS_NOTE.md](https://github.com/ijkuS/min
      -    [8. Difference between 'onclick' and 'addEventListener'](#8-difference-between-onclick-and-addeventlistener)
      -    [9. Refactoring: Dependency Injection](#9-refactoring-dependency-injection)
      -    [10. Refactoring: Dialog](#10-refactoring-dialog)
+     -    [11. Edit memo items](#11-edit-memo-item)
 
+     -    WIP [Troubleshooting: Youtube X-Frame-Options to sameorigin](#troubleshooting-youtube-x-frame-options-to-sameorigin)
+     -    [Troubleshooting: Edit a video item](#troubleshooting-edit-a-video-item)
+
+     -    [Unique ID](#unique-id)
      -    [[CSS Tips] border-radius and `overflow: hidden`](#css-tips-border-radius-and-overflow-hidden)
      -    [[CSS Tips] Scroll bar styling](#css-tips-scroll-bar-styling)
 
@@ -44,6 +50,16 @@ You can see more details on the **[PROCESS_NOTE.md](https://github.com/ijkuS/min
 -    A React-like component-based file structure was adopted for better maintainability, though the React library itself was not used.
 -    The project is designed as a web application.
 
+### Screenshot
+
+#### minimemo screenshot - App Main
+
+![](./assets/screenshots/minimemo_screenshot_Main.jpg =x450)
+
+#### minimemo screenshot - App Dialog for adding a memo 
+
+![](./assets/screenshots/minimemo_screenshot_dialog-Add.jpg)
+
 ### Goal
 
 Users should be able to:
@@ -56,9 +72,9 @@ Users should be able to:
 
 **Good to have**
 
--    [ ] Edit all the memo
--    [ ] Reorder memos with drag & drop motion
+-    [x] Edit all the memo
 -    [ ] Filter memos by group (image / video / todo / note)
+-    [ ] Reorder memos with drag & drop motion
 
 **Optional**
 
@@ -472,7 +488,130 @@ class App {
 new App(document.querySelector('.document')! as HTMLElement, document.body);
 ```
 
-### Edit memo item
+### 11. Edit memo item
+
+Initial plan:
+
+-    [x] Assign unique IDs
+-    [x] Add editListener and edit button
+-    [x] Check existing list item by ID (function filterExistingItems)
+-    Open Edit Dialog (Q: Can I use the existing dialog component structure?)
+
+Plan of function filterExistingItems:
+
+-    [x] function to check and filter existing memo items with itemId
+-    [x] if (itemId) in the current list
+-    [x] -> check if it is MediaData type or TextData by checking existence of img or iframe
+-    [x] Q. (check if using interface MediaData or TextData?) -> Done!
+-    [x] if (mediaData)-> return the data(title, body, url?)
+-    [x] if (textData)-> return the data(title, body)
+
+```
+- Plan of function filterExistingItems
+
+	[x] function to check and filter existing memo items with itemId
+	[x] if (itemId) in the current list
+			-> check if it is MediaData type or TextData by checking existence of img or iframe
+				- Q. (check if using interface MediaData or TextData?) -> Done!
+	[x] if (mediaData)-> get the data(title, body, url?)
+	[x] if (textData)->get the data(title, body)
+
+	[x] Edit a page-item
+	[x] override the data of the page-item
+
+//Q. Can I use bindElementToDialog infra here? (app.ts) since it seems similar
+```
+
+```
+- Interaction of Edit feature
+
+	- Click an edit button
+	- Get the data of the clicked item (title, body, url(optional))
+	- Open a dialog to edit
+	- Show the current item’s data in the input fields
+	- Edit each data, (title, body, url(optional))
+	- Click Edit Submit button
+	- Override the data from the existing data to the newly input data.
+```
+
+**Issue:**
+
+-    Updating the title and body fields worked fine, but the url field for media items (like images and videos) wasn't updating.
+-    The problem occurred because TextData doesn’t have a url property, and I was trying to access url for both MediaData and TextData types.
+
+**Solution**
+
+-    Handle Different Data Types: I adjusted the logic in setOnEditSubmitListener to handle both MediaData (with url) and TextData (without url).
+
+-    Use Type Casting for Media Data: I cast the data as MediaData when needed, which resolved the type issues and allowed me to access the url property safely.
+
+-    Fix the src vs. textContent Issue: I corrected how I updated the media element. Instead of using textContent to update the URL, I switched to using src, which is the correct attribute for media items like <img> and <iframe>.
+
+```typescript
+// Snippet of 'updatePageItem.ts'
+
+// update title, body, and URL
+if (titleElement) titleElement.textContent = filteredData.title;
+if (bodyElement) bodyElement.textContent = filteredData.body;
+if (urlElement) urlElement.src = filteredData.url;
+```
+
+### Troubleshooting: Youtube X-Frame-Options to sameorigin
+
+Issue: Adding a new video item with youtube link works well, but when it is on edit mode, Youtube refused to display due to X-frame-options to sameorigin.
+
+> Refused to display ‘https://www.youtube.com/’ in a frame because it set ‘X-Frame-Options’ to ‘sameorigin‘
+
+**Solution:** WIP
+
+### Troubleshooting: Edit a video item
+
+Issue: The initial description (body input) for a video item wasn’t appearing in edit mode.
+
+Investigation: I suspected an issue with how the data was being handled, particularly whether the video description (body) was being properly conveyed to the edit form.
+
+Solution:
+
+-    After reviewing the code, I found a typo in updatePageItem.ts & filterExistingitems.ts that prevented the description from being populated correctly.
+-    The fix involved correcting the typo, ensuring the body (description) field was passed and updated as expected.
+
+```typescript
+// with typo
+const bodyElement = mediaElement.querySelector(
+	'.image__description, .video_description'
+);
+
+// fixed
+const bodyElement = mediaElement.querySelector(
+	'.image__description, .video__description'
+);
+```
+
+### Unique ID
+
+-    Without using library UUID, I created a function using Date.now and Math.random
+
+```
+		const itemKey = `memo-${Date.now()}-${Math.floor(
+			Math.random() * 100
+		)}`;
+		this.element.setAttribute('id', itemKey);
+```
+
+### [CSS Tips] Checkbox size and color
+
+-    Change Checkbox Size: Use the CSS property transform: scale(number) to resize the default checkbox.
+-    Modify Checkbox Color: Set the accent-color property to customize the color of default checkboxes.
+
+```css
+.checkbox {
+	transform: scale(1.3);
+}
+
+body {
+	accent-color: var(--color-accent);
+}
+```
 
 ### [CSS Tips] border-radius and `overflow: hidden`
 

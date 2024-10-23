@@ -3,6 +3,7 @@ import { Composable } from '../pages/page.js';
 
 type OnCloseListener = () => void;
 type OnSubmitListener = () => void;
+type OnEditSubmitListener = () => void;
 
 export interface MediaData {
 	// deleted readonly for edit feature
@@ -20,26 +21,32 @@ export class InputDialog
 	extends BaseComponent<HTMLElement>
 	implements Composable
 {
-	private _updatedData?: MediaData | TextData;
 	closeListener?: OnCloseListener;
 	submitListener?: OnSubmitListener;
+	editListener?: OnEditSubmitListener; //edit dialog's submit button이 눌리면 알려줘
 
 	constructor(
 		protected isEditMode: boolean = false, // Flag to distinguish between Add and Edit Mode
-		protected initialData?: MediaData | TextData //Optional data for edit mode
+		protected initialData?: MediaData | TextData, //Optional data for edit mode
+		protected updatedData?: MediaData | TextData
 	) {
 		super(`<dialog class="dialog">
-               <div class="dialog__container">
-                  <div class="dialog__controls">
-                     <h2 class="memo__title">${
-						isEditMode ? 'Edit memo' : 'New memo'
-					}</h2>
-                     <button class="close">&times</button>
-                  </div>
-                  <div class="dialog__body"></div>
-                  <button class="submit">${isEditMode ? 'EDIT' : 'ADD'}</button>
-               </div>
-             </dialog>`);
+						<div class="dialog__container">
+							<div class="dialog__controls">
+								<h2 class="memo__title">
+									${isEditMode ? 'Edit memo' : 'New memo'}
+								</h2>
+								<button class="close">
+									<img
+										class="close icon"
+										src="./assets/x_icon.svg"
+										alt="close-icon" />
+								</button>
+							</div>
+							<div class="dialog__body"></div>
+							<button class="submit">${isEditMode ? 'Save' : 'Add'}</button>
+						</div>
+				 </dialog>`);
 
 		const dialogCloseBtn = this.element.querySelector(
 			'.close'
@@ -50,17 +57,22 @@ export class InputDialog
 		const submitBtn = this.element.querySelector(
 			'.submit'
 		)! as HTMLButtonElement;
-		submitBtn.onclick = () => {
+		submitBtn.addEventListener('click', () => {
 			console.log('submit button is clicked');
-			this.collectUdatedData();
+			// this.collectUpdatedData();
 			this.submitListener && this.submitListener();
-		};
+			this.editListener && this.editListener();
+		});
 	}
 	setOnCloseListener(listener: OnCloseListener) {
+		console.log('this is from dialog');
 		this.closeListener = listener;
 	}
 	setOnSubmitListener(listener: OnSubmitListener) {
 		this.submitListener = listener;
+	}
+	setOnEditSubmitListener(listener: OnEditSubmitListener) {
+		this.editListener = listener;
 	}
 
 	addChild(child: Component): void {
@@ -89,26 +101,22 @@ export class InputDialog
 				urlInput.value = this.initialData.url;
 			}
 		}
-	}
-	// internal method to collect updated data before submission
-	private collectUdatedData(): void {
-		const title = (
-			this.element.querySelector('#title') as HTMLInputElement
-		).value;
-		const body = (
-			this.element.querySelector('#body') as HTMLTextAreaElement
-		).value;
+		if (this.initialData && this.updatedData) {
+			const titleInput = this.element.querySelector(
+				'#title'
+			)! as HTMLInputElement;
+			const bodyInput = this.element.querySelector(
+				'#body'
+			)! as HTMLTextAreaElement;
+			titleInput.value = this.updatedData.title;
+			bodyInput.value = this.updatedData.body;
 
-		if ('url' in this.initialData!) {
-			const url = (
-				this.element.querySelector('#url') as HTMLInputElement
-			).value;
-			this._updatedData = { title, body, url } as MediaData;
-		} else {
-			this._updatedData = { title, body } as TextData;
+			if ('url' in this.updatedData) {
+				const urlInput = this.element.querySelector(
+					'#url'
+				)! as HTMLInputElement;
+				urlInput.value = this.updatedData.url;
+			}
 		}
-	} // Public method to access the updated data
-	getUpdatedData(): MediaData | TextData | undefined {
-		return this._updatedData;
 	}
 }

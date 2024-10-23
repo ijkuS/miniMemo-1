@@ -21,7 +21,7 @@ export class VideoComponent extends BaseComponent<HTMLElement> {
 
 		const titleElement = this.element.querySelector(
 			'.video__title'
-		)! as HTMLHeadElement;
+		)! as HTMLHeadingElement;
 		titleElement.textContent = title;
 
 		const bodyElement = this.element.querySelector(

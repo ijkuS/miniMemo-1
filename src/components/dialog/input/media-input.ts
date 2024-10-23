@@ -2,6 +2,8 @@ import { BaseComponent } from '../../component.js';
 import { MediaData } from '../dialog';
 
 export class MediaSectionInput extends BaseComponent<HTMLElement> {
+
+
 	constructor(initialData?: MediaData) {
 		super(`<div class="media-input">
                <section class="form__container">
@@ -35,6 +37,7 @@ export class MediaSectionInput extends BaseComponent<HTMLElement> {
 			bodyInput.value = initialData.body;
 		} 
 	}
+
 	get title(): string {
 		const element = this.element.querySelector(
 			'#title'
@@ -53,4 +56,6 @@ export class MediaSectionInput extends BaseComponent<HTMLElement> {
 		)! as HTMLInputElement;
 		return element.value;
 	}
+	
+
 }

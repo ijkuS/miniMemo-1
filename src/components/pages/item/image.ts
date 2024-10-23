@@ -24,7 +24,7 @@ export class ImageComponent extends BaseComponent<HTMLElement> {
 
 		const bodyElement = this.element.querySelector(
 			'.image__description'
-		) as HTMLParagraphElement;
+		)! as HTMLParagraphElement; // 
 		bodyElement.textContent = body;
 	}
 }
