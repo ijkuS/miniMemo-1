@@ -41,6 +41,7 @@ which aims to document the development process of the MiniMemo app.
      -    [[CSS Tips] Checkbox size and color](#css-tips-checkbox-size-and-color)
      -    [[CSS Tips] border-radius and `overflow: hidden`](#css-tips-border-radius-and-overflow-hidden)
      -    [[CSS Tips] Scroll bar styling](#css-tips-scroll-bar-styling)
+     -    [[CSS Tips] Responsive web design: Media Queries]()
 
 -    [Future Improvements](#future-improvements)
 -    [Useful resources](#useful-resources)
@@ -90,6 +91,7 @@ Users should be able to:
 -    [x] Edit all the memo
 -    [ ] Filter memos by group (image / video / todo / note)
 -    [ ] Reorder memos with drag & drop motion
+-    [ ] LocalStorage
 
 **Optional**
 
@@ -690,6 +692,19 @@ body {
 	border-radius: var(--border-radius-medium);
 }
 ```
+
+### [CSS Tips] Responsive web design: Media Queries
+
+```css
+@media (max-width: 800px) {
+	.small-tomato {
+		background-color: tomato;
+	}
+}
+```
+
+[References](https://www.w3schools.com/css/css_rwd_mediaqueries.asp)
+[Typical Device Breakpoints](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_mq_breakpoints)
 
 ## Future Improvements
 
